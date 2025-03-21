@@ -13,7 +13,7 @@
 ## The database
 The database started with the following relational diagram:
 
-![Entity-Relationship Diagram](/database￼se/image/Entity-Relationship Diagram.png)
+![Entity-Relationship Diagram](database/image/Entity-Relationship Diagram.png)
 
 
 Although I plan to make some amendments in the future to address emerging needs, this diagram represents the foundation of my project. The database is organized into multiple tables, with the Recipes table as the main one, containing essential information about each recipe.
