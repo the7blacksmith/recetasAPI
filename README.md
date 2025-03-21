@@ -19,12 +19,12 @@ Although I plan to make some amendments in the future to address emerging needs,
 
 In addition to the Recipes table, the database includes the following tables to provide comprehensive and detailed information:
 
-Ingredients table: Stores the ingredients used in each recipe.
-Diet Type table: Specifies dietary categories 
-Food Group table: Classifies ingredients into nutritional groups.
-Difficulty table:  The level of complexity required to prepare each recipe.
-Dish Type table: Based on the type of dish.
-These additional tables are related to the Recipes table, allowing for a well-organized and easily expandable structure that enhances the flexibility of the application.
+- Ingredients table: Stores the ingredients used in each recipe.
+- Diet Type table: Specifies dietary categories 
+- Food Group table: Classifies ingredients into nutritional groups.
+- Difficulty table:  The level of complexity required to prepare each recipe.
+- Dish Type table: Based on the type of dish.
+- These additional tables are related to the Recipes table, allowing for a well-organized and easily expandable structure that enhances the flexibility of the application.
 
 There are also two files in the database folder.
 
@@ -51,5 +51,6 @@ This makes it easy to explore and interact with the API without having to manual
 To quickly set up the database and load the initial recipes, execute the following commands:
 
 python3 script.py
+
 python3 seeds.py
 
