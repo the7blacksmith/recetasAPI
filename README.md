@@ -40,7 +40,8 @@ When executed, it will generate the following tables:
 - ** food\_groups **
 - ** difficulty **                  
 - ** dish\_type **
-- seeds.py -\> this script is used to populate the database with initial data to test and experiment with the API.
+
+2. seeds.py -\> this script is used to populate the database with initial data to test and experiment with the API.
 It will add 19 classic Spanish recipes along with their ingredients and complementary information in the related tables.
 This makes it easy to explore and interact with the API without having to manually add data.
   
