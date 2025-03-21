@@ -28,27 +28,28 @@ These additional tables are related to the Recipes table, allowing for a well-or
 
 There are also two files in the database folder.
 
-1. script.py -\> this script is responsible for creating the database along with all the necessary tables.
+1. **script.py** -\> this script is responsible for creating the database along with all the necessary tables.
 When executed, it will generate the following tables:
-- **recipes**
-- ** recipes\_ingredients **
-- ** ingredients **
-- ** measure\_type **
-- ** recipes\_diet\_type **
-- ** diet\_type **
-- ** recipes\_food\_groups **
-- ** food\_groups **
-- ** difficulty **                  
-- ** dish\_type **
 
-2. seeds.py -\> this script is used to populate the database with initial data to test and experiment with the API.
+- recipes
+- recipes\_ingredients
+- ingredients
+- measure\_type
+- recipes\_diet\_type
+- diet\_type
+- recipes\_food\_groups
+- food\_groups
+- difficulty                 
+- dish\_type
+
+2. **seeds.py** -\> this script is used to populate the database with initial data to test and experiment with the API.
 It will add 19 classic Spanish recipes along with their ingredients and complementary information in the related tables.
 This makes it easy to explore and interact with the API without having to manually add data.
   
 **Quick Start**
+
 To quickly set up the database and load the initial recipes, execute the following commands:
 
 python3 script.py
-
 python3 seeds.py
 
