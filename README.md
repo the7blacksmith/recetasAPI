@@ -24,7 +24,8 @@ In addition to the Recipes table, the database includes the following tables to 
 - Food Group table: Classifies ingredients into nutritional groups.
 - Difficulty table:  The level of complexity required to prepare each recipe.
 - Dish Type table: Based on the type of dish.
-- These additional tables are related to the Recipes table, allowing for a well-organized and easily expandable structure that enhances the flexibility of the application.
+
+These additional tables are related to the Recipes table, allowing for a well-organized and easily expandable structure that enhances the flexibility of the application.
 
 There are also two files in the database folder.
 
