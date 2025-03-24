@@ -13,7 +13,7 @@
 ## The database
 The database started with the following relational diagram:
 
-![Entity-Relationship Diagram](database/images/Entity-Relationship%20Diagram.png)
+![Entity-Relationship Diagram][image-1]
 
 Although I plan to make some amendments in the future to address emerging needs, this diagram represents the foundation of my project. The database is organized into multiple tables, with the Recipes table as the main one, containing essential information about each recipe.
 
@@ -55,3 +55,57 @@ python3 script.py
 
 python3 seeds.py
 
+## The API
+
+This API allows you to manage and search for recipes stored in the database, offering flexible filtering options to get precise results based on your criteria. At the moment, it has two main endpoints:
+1.   General recipe search: Retrieves a list of recipes that match the specified filters.
+2.   Recipe details: Shows detailed information about a specific recipe using its ID.
+
+The API is built with Flask, following best practices for project structure and SQLite3.
+
+Project Structure
+- main.py: The entry point that starts and manages the Flask server.
+- db.py: Handles the connection to the SQLite database.
+- models/: Contains Python functions that interact directly with the database.
+- routes/: Defines the API endpoints and processes incoming requests by interacting with models.py to fetch the needed data.
+
+### How to Use the API
+1. Searching for Recipes
+
+GET http://localhost:port/recipes
+
+This endpoint lets you search for recipes stored in the database using a variety of filters. The **keyword** filter is required, while the others are optional and can be combined as needed.
+Available Filters
+- keyword (required): Filters recipes containing the specified text in the title, summary, or instructions.
+	Example: http://localhost:port/recipes?keyword=tortilla
+	- ingredients (optional): Filters recipes that include one or more specified ingredients.
+		Example: http://localhost:port/recipes?keyword=tortilla&ingredients=cebolla or http://localhost:port/recipes?keyword=tortilla&ingredients=huevo&ingredients=patatas
+	- diet_type (optional): Filters recipes according to dietary preferences, which can be combined with other filters.
+	◦	Example: http://localhost:port/recipes?keyword=tortilla&diet_type=vegetariana
+	or http://localhost:port/recipes?keyword=pasta&diet_type=sin+lactosa&diet_type=vegana
+	- food_groups (optional): Filters by food groups, like “carne”, "Verduras", or “Pasteles”. You can specify more than one.
+	◦	Example: http://localhost:port/recipeskeyword=tortilla&food_groups=carne&food_groups=patatas or http://localhost:port/recipes?keyword=tortilla&diet_type=vegetariana&food_groups=tapas+calientes
+	- difficulty (optional, single-use): Filters recipes by difficulty level (fácil", "medio", "difícil", "profesional”).
+	◦	Example: http://localhost:port/recipes?keyword=tomate&difficulty=medio
+	- dish_type (optional, single-use): Specifies the type of dish, like "starter", "main course", or "dessert".
+	◦	Example: http://localhost:port/recipes?keyword=tomate&dish_type=primer+plato  
+	  
+
+
+📑 Example Response (Search)
+
+*Poner respuesta*
+2. Searching for an accurate recipe:
+	 http://localhost:port/recipes/id/{integer}
+This endpoint returns detailed information about a specific recipe, identified by its ID.
+Usage Examples
+
+http://localhost:port/recipes/id/4
+http://localhost:port/recipes/id/18
+Example Response (Recipe Detail)
+
+
+
+
+
+[image-1]:	database/images/Entity-Relationship%20Diagram.png
