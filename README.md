@@ -115,6 +115,10 @@ Available Filters
 
 📑 Example Response (Search)
 
+This is an example of the JSON response you can get by filtering as shown above.
+
+![recipes_search](database/images/recipes_search.png)
+
 
 2. Searching for an accurate recipe:
    
@@ -127,10 +131,10 @@ Usage Examples
 http://localhost:port/recipes/id/4
 http://localhost:port/recipes/id/18
 
-Example Response (Recipe Detail)
+Example Response
 
+This is an example of the JSON response you can get by filtering as shown above.
 
-
-
+![recipes_search](database/images/id_search.png)
 
 [image-1]:	database/images/Entity-Relationship%20Diagram.png
