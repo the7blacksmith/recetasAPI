@@ -83,22 +83,26 @@ Available Filters
   
 	Example:
 		- http://localhost:port/recipes?keyword=tortilla
+  
 - **ingredients** (*optional*): Filters recipes that include one or more specified ingredients.
   
 	Example:
 		- http://localhost:port/recipes?keyword=tortilla&ingredients=cebolla
+  
 		- http://localhost:port/recipes?keyword=tortilla&ingredients=huevo&ingredients=patatas
 
 - **diet_type** (*optional*): Filters recipes according to dietary preferences, which can be combined with other filters.
 
   	Example:
   		- http://localhost:port/recipes?keyword=tortilla&diet_type=vegetariana
+  
   		- http://localhost:port/recipes?keyword=pasta&diet_type=sin+lactosa&diet_type=vegana
   
 - **food_groups** (*optional*): Filters by food groups, like “carne”, "Verduras", or “Pasteles”. You can specify more than one.
 
   	Example:
   		- http://localhost:port/recipeskeyword=tortilla&food_groups=carne&food_groups=patatas
+  
   		- http://localhost:port/recipes?keyword=tortilla&diet_type=vegetariana&food_groups=tapas+calientes
   
 - **difficulty** (*optional*, **single-use**): Filters recipes by difficulty level (fácil", "medio", "difícil", "profesional”).
@@ -113,7 +117,7 @@ Available Filters
 	  
 
 
-📑 Example Response (Search)
+###Example Response (Search)
 
 This is an example of the JSON response you can get by filtering as shown above.
 
@@ -126,15 +130,163 @@ This is an example of the JSON response you can get by filtering as shown above.
 
 This endpoint returns detailed information about a specific recipe, identified by its ID.
 
-Usage Examples
+###Usage Examples
 
 http://localhost:port/recipes/id/4
+
 http://localhost:port/recipes/id/18
 
-Example Response
+###Example Response
 
 This is an example of the JSON response you can get by filtering as shown above.
 
 ![recipes_search](database/images/id_search.png)
+
+Below are the filters you can use in your searches using the API
+
+**ingredients**
+
+Harina
+Azúcar
+Sal
+Huevos
+Leche
+Mantequilla
+Aceite de oliva
+Levadura
+Vainilla
+Chocolate
+Fresas
+Manzanas
+Zanahorias
+Papas
+Cebollas
+Tomates
+Pollo
+Carne molida
+Queso
+Orégano
+Pimienta
+Canela
+Albahaca
+Ajo
+Limón
+Arroz
+Frijoles
+Pan
+Crema
+Champiñones
+Espinacas
+Perejil
+Chile
+Apio
+Pimientos
+Miel
+Jengibre
+Cilantro
+Mostaza
+Ketchup
+Salsa de soya
+Vinagre
+Caldo de pollo
+Pescado
+Camarones
+Lentejas
+Yogur
+Almendras
+Nueces
+Pasas
+Maíz
+Avena
+Pan integral
+Aguacate
+
+**diet_type**
+
+Vegetariana
+Vegana
+Sin gluten
+Sin lactosa
+Sin trigo
+Baja en carbohidratos
+Keto (Cetogénica)
+Mediterránea
+Dieta DASH
+Dieta nórdica
+Sin azúcar
+Baja en sodio
+Alta en proteínas
+Baja en grasas
+Dieta macrobiótica
+Dieta carnívora
+Sin soja
+Sin huevo
+Low FODMAP
+Whole30
+Dieta baja en colesterol
+Dieta rica en fibra
+Dieta hiperprotéica
+Dieta para diabéticos
+Dieta DASH vegetariana
+Dieta rica en calcio
+Dieta sin cítricos
+Dieta sin fructosa
+
+**difficulty**
+
+Fácil
+Medio
+Difícil
+Profesional
+
+**dish_type**
+
+Entrante
+Plato principal
+Acompañamientos
+Postre
+Bebida
+
+**food_groups**
+
+Tapas Calientes
+Tapas frías
+Canapé
+Hojaldres
+Empanadillas
+Empanadas
+Crudités
+Carpaccio
+Salsas
+Encurtidos
+Carnes
+Aves
+Ensaladas
+Verduras
+Purés
+Patatas
+Panes
+Hojaldres
+Pescados
+Tartas
+Pasteles
+Helados
+Sorbetes
+Flanes y puddings
+Galletas
+Bizcochos
+Frutas
+Soufflés
+Mariscos
+Cócteles
+Bebidas refrescantes
+Batidos y licuados
+Pasta
+Arroces
+Guisos y potajes
+Parrilla o Barbacoa
+Platos al horno
+Frituras
+Platos étnicos
 
 [image-1]:	database/images/Entity-Relationship%20Diagram.png
