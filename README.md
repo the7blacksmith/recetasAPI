@@ -82,11 +82,13 @@ Available Filters
 - **keyword** (required): Filters recipes containing the specified text in the title, summary, or instructions.
   
 	Example:
+
 		- http://localhost:port/recipes?keyword=tortilla
   
 - **ingredients** (*optional*): Filters recipes that include one or more specified ingredients.
   
 	Example:
+
 		- http://localhost:port/recipes?keyword=tortilla&ingredients=cebolla
   
 		- http://localhost:port/recipes?keyword=tortilla&ingredients=huevo&ingredients=patatas
@@ -94,6 +96,7 @@ Available Filters
 - **diet_type** (*optional*): Filters recipes according to dietary preferences, which can be combined with other filters.
 
   	Example:
+  
   		- http://localhost:port/recipes?keyword=tortilla&diet_type=vegetariana
   
   		- http://localhost:port/recipes?keyword=pasta&diet_type=sin+lactosa&diet_type=vegana
@@ -101,6 +104,7 @@ Available Filters
 - **food_groups** (*optional*): Filters by food groups, like “carne”, "Verduras", or “Pasteles”. You can specify more than one.
 
   	Example:
+  
   		- http://localhost:port/recipeskeyword=tortilla&food_groups=carne&food_groups=patatas
   
   		- http://localhost:port/recipes?keyword=tortilla&diet_type=vegetariana&food_groups=tapas+calientes
@@ -108,11 +112,13 @@ Available Filters
 - **difficulty** (*optional*, **single-use**): Filters recipes by difficulty level (fácil", "medio", "difícil", "profesional”).
 
   	Example:
+  
 		- http://localhost:port/recipes?keyword=tomate&difficulty=medio
   
 - **dish_type** (*optional*, **single-use**): Specifies the type of dish, like "starter", "main course", or "dessert".
 
   	Example:
+  
 		- http://localhost:port/recipes?keyword=tomate&dish_type=primer+plato  
 	  
 
