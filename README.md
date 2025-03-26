@@ -8,7 +8,7 @@
 - **Flask**: The framework used to build the  API.
 - **SQLite3**: The database used to store recipe data in a lightweight, serverless format.
 - **Git**: Version control system used for managing code and collaboration.
-- **Virtualenv** (if used): Tool to create isolated Python environments.
+- **Virtualenv**: Tool to create isolated Python environments.
 
 ## The database
 The database started with the following relational diagram:
