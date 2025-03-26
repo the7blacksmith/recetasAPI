@@ -51,9 +51,8 @@ This makes it easy to explore and interact with the API without manually adding 
 
 To quickly set up the database and load the initial recipes, execute the following commands:
 
-python3 script.py
-
-python3 seeds.py
+- python3 script.py
+- python3 seeds.py
 
 ## The API
 
