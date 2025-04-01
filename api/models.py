@@ -207,7 +207,7 @@ def create_recipe(create_r):
       cur.execute("INSERT OR IGNORE INTO recipes_food_groups (recipes_id, food_groups_id) VALUES (?, ?)", (recipe_id, food_groups_id))
       
     db.commit()
-    return {"error": f"The recipe {title} has been successfully added"}
+    return {"message": f"The recipe {title} has been successfully added"}
 
   except Exception as e:
     db.rollback()

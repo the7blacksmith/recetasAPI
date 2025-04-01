@@ -18,7 +18,7 @@ def search_recipes():
         diet_type = request.args.getlist('diet_type')
 
         if not keyword:
-               return "Parameter 'keyword' is required", 400
+               return jsonify({"error": "Parameter 'keyword' is required"}), 400
 
         try:
                 res = get_recipes(keyword, difficulty = difficulty, dish_type = dish_type, ingredients = ingredients, food_groups = food_groups, diet_type = diet_type)
@@ -37,11 +37,11 @@ def search_recipes():
                 if len(lista) > 0:
                        return jsonify(lista)
                 else:
-                       return "No recipes found matching the search criteria", 404
+                       return jsonify({"error": "No recipes found matching the search criteria"}), 404
                 
         except Exception as e:
-            print("E:",e)
-            return "Internal server error. Please try again later.", 500
+            
+            return jsonify({"error": e}), 500
         
 @recipes.route('/id/<int:recipe_id>', methods = ['GET'])
 def get_recipe_id(recipe_id):
@@ -54,7 +54,7 @@ def get_recipe_id(recipe_id):
                
 
                 if len(recipe[0])<1:
-                        return "No recipe found with the given ID", 404
+                        return jsonify({"error": "No recipe found with the given ID"}), 404
                 
                 else:
                         ing_list= []
@@ -98,14 +98,14 @@ def get_recipe_id(recipe_id):
                         return recipe_dict, 200
         
         except Exception as e:
-                print("ERROR:", e)
-                return "Internal server error. Please try again later.", 500
+                
+                return ({"error": e}), 500
 
 @recipes.route('/', methods = ['POST'])
 def new_recipe():
         recipe = request.get_json()
         if not recipe:
-                return jsonify({"ERROR": "No recipe data was provided."}), 400
+                return jsonify({"error": "No recipe data was provided."}), 400
         try: 
                 recipe = recipe_schema.load(recipe)
                 new_json_recipe = create_recipe(recipe)
@@ -114,4 +114,4 @@ def new_recipe():
                 return jsonify({"message": "The recipe has been successfuly created"}), 201
         
         except ValidationError as e:
-                return jsonify({"ERROR": e.messages}), 422
+                return jsonify({"error": e.messages}), 422
