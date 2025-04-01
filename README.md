@@ -4,11 +4,11 @@
 
 ## Technologies Used
 
-- **Python**: The main programming language used.
-- **Flask**: The framework used to build the  API.
-- **SQLite3**: The database used to store recipe data in a lightweight, serverless format.
-- **Git**: Version control system used for managing code and collaboration.
-- **Virtualenv** (if used): Tool to create isolated Python environments.
+- **Python**
+- **Flask**
+- **SQLite3**
+- **Git**
+- **Virtualenv**
 
 ## The database
 The database started with the following relational diagram:
@@ -29,7 +29,7 @@ These additional tables are related to the Recipes table, allowing for a well-or
 
 There are also two files in the database folder.
 
-1. **script.py** -\> this script is responsible for creating the database along with all the necessary tables.
+1. **script.py** -\> this script is responsible for creating the database and all the necessary tables.
 When executed, it will generate the following tables:
 
 - recipes
@@ -45,15 +45,14 @@ When executed, it will generate the following tables:
 
 2. **seeds.py** -\> this script is used to populate the database with initial data to test and experiment with the API.
 It will add 19 classic Spanish recipes along with their ingredients and complementary information in the related tables.
-This makes it easy to explore and interact with the API without having to manually add data.
+This makes it easy to explore and interact with the API without manually adding data.
   
 **Quick Start**
 
 To quickly set up the database and load the initial recipes, execute the following commands:
 
-python3 script.py
-
-python3 seeds.py
+- python3 script.py
+- python3 seeds.py
 
 ## The API
 
@@ -61,11 +60,11 @@ This API allows you to manage and search for recipes stored in the database, off
 1.   General recipe search: Retrieves a list of recipes that match the specified filters.
 2.   Recipe details: Shows detailed information about a specific recipe using its ID.
 
-The API is built with Flask, following best practices for project structure and leveraging SQLite3 for data management. It is designed to adhere to RESTful API principles as much as possible, ensuring clear and consistent endpoint naming, proper use of HTTP methods, and stateless interactions. This not only makes the API intuitive and easy to use but also aligns with modern standards for maintainability and scalability.
+The API is built with Flask, following best practices for project structure, and SQLite3 for data management. It is designed to adhere to RESTful API principles as much as possible, ensuring clear and consistent endpoint naming, proper use of HTTP methods, and stateless interactions. This not only makes the API intuitive and easy to use but also aligns with modern standards for maintainability and scalability.
 
-Project Structure
+**Project Structure**
 - main.py: The entry point that starts and manages the Flask server.
-- db.py: Handles the connection to the SQLite database.
+- db.py: This handles the connection to the SQLite database, and it can be imported in the other .py files.
 - models/: Contains Python functions that interact directly with the database.
 - routes/: Defines the API endpoints and processes incoming requests by interacting with models.py to fetch the needed data.
 
@@ -79,14 +78,16 @@ This endpoint lets you search for recipes stored in the database using a variety
 
 Available Filters
 
-- **keyword** (required): Filters recipes containing the specified text in the title, summary, or instructions.
+- **keyword** (*required*): Filters recipes containing the specified text in the title, summary, or instructions.
   
 	Example:
+
 		- http://localhost:port/recipes?keyword=tortilla
   
 - **ingredients** (*optional*): Filters recipes that include one or more specified ingredients.
   
 	Example:
+
 		- http://localhost:port/recipes?keyword=tortilla&ingredients=cebolla
   
 		- http://localhost:port/recipes?keyword=tortilla&ingredients=huevo&ingredients=patatas
@@ -94,6 +95,7 @@ Available Filters
 - **diet_type** (*optional*): Filters recipes according to dietary preferences, which can be combined with other filters.
 
   	Example:
+  
   		- http://localhost:port/recipes?keyword=tortilla&diet_type=vegetariana
   
   		- http://localhost:port/recipes?keyword=pasta&diet_type=sin+lactosa&diet_type=vegana
@@ -101,25 +103,28 @@ Available Filters
 - **food_groups** (*optional*): Filters by food groups, like “carne”, "Verduras", or “Pasteles”. You can specify more than one.
 
   	Example:
+  
   		- http://localhost:port/recipeskeyword=tortilla&food_groups=carne&food_groups=patatas
   
   		- http://localhost:port/recipes?keyword=tortilla&diet_type=vegetariana&food_groups=tapas+calientes
   
-- **difficulty** (*optional*, **single-use**): Filters recipes by difficulty level (fácil", "medio", "difícil", "profesional”).
+- **difficulty** (*optional*, **single-use**): Filters recipes by difficulty level ("fácil", "medio", "difícil", "profesional”).
 
   	Example:
+  
 		- http://localhost:port/recipes?keyword=tomate&difficulty=medio
   
 - **dish_type** (*optional*, **single-use**): Specifies the type of dish, like "starter", "main course", or "dessert".
 
   	Example:
+  
 		- http://localhost:port/recipes?keyword=tomate&dish_type=primer+plato  
 	  
 
 
 ###Example Response (Search)
 
-This is an example of the JSON response you can get by filtering as shown above.
+This is an example of the JSON response you can get by filtering, as shown above.
 
 ![recipes_search](database/images/recipes_search.png)
 
@@ -138,7 +143,7 @@ http://localhost:port/recipes/id/18
 
 ###Example Response
 
-This is an example of the JSON response you can get by filtering as shown above.
+This is an example of the JSON response you can get by filtering, as shown above.
 
 ![recipes_search](database/images/id_search.png)
 
@@ -146,147 +151,147 @@ Below are the filters you can use in your searches using the API
 
 **ingredients**
 
-Harina
-Azúcar
-Sal
-Huevos
-Leche
-Mantequilla
-Aceite de oliva
-Levadura
-Vainilla
-Chocolate
-Fresas
-Manzanas
-Zanahorias
-Papas
-Cebollas
-Tomates
-Pollo
-Carne molida
-Queso
-Orégano
-Pimienta
-Canela
-Albahaca
-Ajo
-Limón
-Arroz
-Frijoles
-Pan
-Crema
-Champiñones
-Espinacas
-Perejil
-Chile
-Apio
-Pimientos
-Miel
-Jengibre
-Cilantro
-Mostaza
-Ketchup
-Salsa de soya
-Vinagre
-Caldo de pollo
-Pescado
-Camarones
-Lentejas
-Yogur
-Almendras
-Nueces
-Pasas
-Maíz
-Avena
-Pan integral
-Aguacate
+- Harina
+- Azúcar
+- Sal
+- Huevos
+- Leche
+- Mantequilla
+- Aceite de oliva
+- Levadura
+- Vainilla
+- Chocolate
+- Fresas
+- Manzanas
+- Zanahorias
+- Papas
+- Cebollas
+- Tomates
+- Pollo
+- Carne molida
+- Queso
+- Orégano
+- Pimienta
+- Canela
+- Albahaca
+- Ajo
+- Limón
+- Arroz
+- Frijoles
+- Pan
+- Crema
+- Champiñones
+- Espinacas
+- Perejil
+- Chile
+- Apio
+- Pimientos
+- Miel
+- Jengibre
+- Cilantro
+- Mostaza
+- Ketchup
+- Salsa de soya
+- Vinagre
+- Caldo de pollo
+- Pescado
+- Camarones
+- Lentejas
+- Yogur
+- Almendras
+- Nueces
+- Pasas
+- Maíz
+- Avena
+- Pan integral
+- Aguacate
 
 **diet_type**
 
-Vegetariana
-Vegana
-Sin gluten
-Sin lactosa
-Sin trigo
-Baja en carbohidratos
-Keto (Cetogénica)
-Mediterránea
-Dieta DASH
-Dieta nórdica
-Sin azúcar
-Baja en sodio
-Alta en proteínas
-Baja en grasas
-Dieta macrobiótica
-Dieta carnívora
-Sin soja
-Sin huevo
-Low FODMAP
-Whole30
-Dieta baja en colesterol
-Dieta rica en fibra
-Dieta hiperprotéica
-Dieta para diabéticos
-Dieta DASH vegetariana
-Dieta rica en calcio
-Dieta sin cítricos
-Dieta sin fructosa
+- Vegetariana
+- Vegana
+- Sin gluten
+- Sin lactosa
+- Sin trigo
+- Baja en carbohidratos
+- Keto (Cetogénica)
+- Mediterránea
+- Dieta DASH
+- Dieta nórdica
+- Sin azúcar
+- Baja en sodio
+- Alta en proteínas
+- Baja en grasas
+- Dieta macrobiótica
+- Dieta carnívora
+- Sin soja
+- Sin huevo
+- Low FODMAP
+- Whole30
+- Dieta baja en colesterol
+- Dieta rica en fibra
+- Dieta hiperprotéica
+- Dieta para diabéticos
+- Dieta DASH vegetariana
+- Dieta rica en calcio
+- Dieta sin cítricos
+- Dieta sin fructosa
 
 **difficulty**
 
-Fácil
-Medio
-Difícil
-Profesional
+- Fácil
+- Medio
+- Difícil
+- Profesional
 
 **dish_type**
 
-Entrante
-Plato principal
-Acompañamientos
-Postre
-Bebida
+- Entrante
+- Plato principal
+- Acompañamientos
+- Postre
+- Bebida
 
 **food_groups**
 
-Tapas Calientes
-Tapas frías
-Canapé
-Hojaldres
-Empanadillas
-Empanadas
-Crudités
-Carpaccio
-Salsas
-Encurtidos
-Carnes
-Aves
-Ensaladas
-Verduras
-Purés
-Patatas
-Panes
-Hojaldres
-Pescados
-Tartas
-Pasteles
-Helados
-Sorbetes
-Flanes y puddings
-Galletas
-Bizcochos
-Frutas
-Soufflés
-Mariscos
-Cócteles
-Bebidas refrescantes
-Batidos y licuados
-Pasta
-Arroces
-Guisos y potajes
-Parrilla o Barbacoa
-Platos al horno
-Frituras
-Platos étnicos
+- Tapas Calientes
+- Tapas frías
+- Canapé
+- Hojaldres
+- Empanadillas
+- Empanadas
+- Crudités
+- Carpaccio
+- Salsas
+- Encurtidos
+- Carnes
+- Aves
+- Ensaladas
+- Verduras
+- Purés
+- Patatas
+- Panes
+- Hojaldres
+- Pescados
+- Tartas
+- Pasteles
+- Helados
+- Sorbetes
+- Flanes y puddings
+- Galletas
+- Bizcochos
+- Frutas
+- Soufflés
+- Mariscos
+- Cócteles
+- Bebidas refrescantes
+- Batidos y licuados
+- Pasta
+- Arroces
+- Guisos y potajes
+- Parrilla o Barbacoa
+- Platos al horno
+- Frituras
+- Platos étnicos
 
 [image-1]:	database/images/Entity-Relationship%20Diagram.png
