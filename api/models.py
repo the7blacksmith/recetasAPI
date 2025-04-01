@@ -1,6 +1,4 @@
 from db import get_connection
-from pprint import pprint
-
 
 def get_recipes(keyword: str, ingredients = None, difficulty = None, dish_type = None, diet_type = None, food_groups = None):
     db = get_connection()
@@ -88,8 +86,8 @@ def get_recipes(keyword: str, ingredients = None, difficulty = None, dish_type =
         
 
     except Exception as e:
-        print("ERROR:", e)
-        return None
+        
+        return {"error": e}
     
     finally:
         db.close()
@@ -145,15 +143,81 @@ def get_id(recipe_id:int):
         food_groups_query = cur.execute(food_groups_query)
         food_groups_response = food_groups_query.fetchall()
         
-        
-
-
-
         return recipes_response, ingredients_response, diet_type_respose, food_groups_response
     except Exception as e:
-        print("ERROR:", e)
+        return {"error:", e}
     finally:
         db.close()
+
+def create_recipe(create_r):
+  db = get_connection()
+  cur = db.cursor()
+
+  title = create_r["title"]
+  summary = create_r["summary"]
+  cooking_time = create_r["cooking_time"]
+  approx_price = create_r["approx_price"]
+  servings = create_r["servings"]
+  instructions = create_r["instructions"]
+  link = create_r["link"]
+  license = create_r["license"]
+  image = create_r["image"]
+  email = create_r["email"]
+  difficulty = create_r["difficulty"]
+  dish_type = create_r["dish_type"]
+  food_groups = create_r["food_groups"]
+  ingredients =  create_r["ingredients"]
+  diet_type = create_r["diet_type"]
+
+  try:
+    #Getting the difficulty_id and dish_type_id to insert into the recipe table
+    cur.execute("""SELECT id FROM difficulty WHERE name = ?;""", (difficulty.capitalize(), ))
+    difficulty_id = cur.fetchone()[0]
+    cur.execute("""SELECT id FROM dish_type WHERE name = ?;""", (dish_type.capitalize(), ))
+    dish_type_id = cur.fetchone()[0]
+
+  
+
+   #Inserting all the data into the recipe table.
+    cur.execute("INSERT OR IGNORE INTO recipes (title, summary, cooking_time, approx_price, servings, instructions, difficulty_id, dish_type_id, link, license,image, email) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(title) DO NOTHING",(title, summary, cooking_time, approx_price, servings, instructions, difficulty_id, dish_type_id, link, license, image, email))
+    cur.execute("SELECT id FROM recipes where title = (?)", (title, ))
+    recipe_id = cur.fetchone()[0]
+
+    #Inserting the measure types, ingredients, quantities, diet_types and food_groups and retrieving the corresponding IDs
+    for r in ingredients:
+      cur.execute("""INSERT OR IGNORE INTO measure_type (name) VALUES (?) ON CONFLICT DO NOTHING;""", (r[1].capitalize(), ))
+      cur.execute("SELECT id FROM measure_type where name = (?)", (r[1].capitalize(),))
+      measure_type_id = cur.fetchone()[0]
+      cur.execute("INSERT INTO ingredients (name) VALUES (?) ON CONFLICT(name) DO NOTHING", (r[2].capitalize(),))
+      cur.execute("SELECT id FROM ingredients where name = (?)", (r[2].capitalize(),))
+      ingredients_id = cur.fetchone()[0]
+      #inserting information in the recipes_ingredients table
+      cur.execute("INSERT OR IGNORE INTO recipes_ingredients (recipes_id, ingredients_id, measure_type_id, quantity) VALUES (?, ?, ?, ?)", (recipe_id, ingredients_id, measure_type_id, r[0]))
+    
+    for dt in diet_type:
+      cur.execute("INSERT OR IGNORE INTO diet_type (name) VALUES (?) ON CONFLICT(name) DO NOTHING", (dt.capitalize(),))
+      cur.execute("SELECT id FROM diet_type where name = (?)", (dt.capitalize(),))
+      diet_type_id = cur.fetchone()[0]
+      cur.execute("INSERT OR IGNORE INTO recipes_diet_type (recipes_id, diet_type_id) VALUES (?, ?)", (recipe_id, diet_type_id))
+
+    for fg in food_groups:
+      cur.execute("INSERT OR IGNORE INTO food_groups (name) VALUES (?) ON CONFLICT(name) DO NOTHING", (fg.capitalize(),))
+      cur.execute("SELECT id FROM food_groups where name = (?)", (fg.capitalize(),))
+      food_groups_id = cur.fetchone()[0]
+      cur.execute("INSERT OR IGNORE INTO recipes_food_groups (recipes_id, food_groups_id) VALUES (?, ?)", (recipe_id, food_groups_id))
+      
+    db.commit()
+    return {"error": f"The recipe {title} has been successfully added"}
+
+  except Exception as e:
+    db.rollback()
+    return {"error": "The recipe has not been created beacuse:"}, e
+
+    
+  finally:
+    db.close()
+
+
     
 
 

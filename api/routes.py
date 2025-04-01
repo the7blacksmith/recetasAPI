@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
-from models import get_recipes, get_id
-from pprint import pprint
+from models import get_recipes, get_id, create_recipe
+from schemas import recipe_schema
+from marshmallow import ValidationError
 
 
 
@@ -100,4 +101,17 @@ def get_recipe_id(recipe_id):
                 print("ERROR:", e)
                 return "Internal server error. Please try again later.", 500
 
-
+@recipes.route('/', methods = ['POST'])
+def new_recipe():
+        recipe = request.get_json()
+        if not recipe:
+                return jsonify({"ERROR": "No recipe data was provided."}), 400
+        try: 
+                recipe = recipe_schema.load(recipe)
+                new_json_recipe = create_recipe(recipe)
+                if "error" in new_json_recipe:
+                        return jsonify(new_json_recipe), 500
+                return jsonify({"message": "The recipe has been successfuly created"}), 201
+        
+        except ValidationError as e:
+                return jsonify({"ERROR": e.messages}), 422
