@@ -9,6 +9,7 @@
 - **SQLite3**
 - **Git**
 - **Virtualenv**
+- **Marshmallow and flask-marshmallow**
 
 ## The database
 The database started with the following relational diagram:
