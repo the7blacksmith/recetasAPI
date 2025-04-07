@@ -69,7 +69,7 @@ The API is built with Flask, following best practices for project structure, and
 - models/: Contains Python functions that interact directly with the database.
 - routes/: Defines the API endpoints and processes incoming requests by interacting with models.py to fetch the needed data.
 
-### How to Use the API
+## How to Use the API
 
 1. Searching for Recipes
 
@@ -123,7 +123,7 @@ Available Filters
 	  
 
 
-###Example Response (Search)
+#### Example Response (Search)
 
 This is an example of the JSON response you can get by filtering, as shown above.
 
@@ -136,13 +136,13 @@ This is an example of the JSON response you can get by filtering, as shown above
 
 This endpoint returns detailed information about a specific recipe, identified by its ID.
 
-###Usage Examples
+#### Usage Examples
 
 http://localhost:port/recipes/id/4
 
 http://localhost:port/recipes/id/18
 
-###Example Response
+#### Example Response
 
 This is an example of the JSON response you can get by filtering, as shown above.
 
@@ -305,7 +305,7 @@ To send a POST request with JSON data, you can use a variety of tools, such as *
 
 The API uses **Marshmallow** for data validation. If any required field is missing or improperly formatted, the request will fail, and the server will return an error message indicating which field is problematic.
 
-### Field List & Data Types
+#### Field List & Data Types
 
 All of the following fields are required and must be included in your POST request:
 
@@ -357,7 +357,7 @@ You can see below an example of a JSON you can use to create a new recipe in the
   "email": "xxxx@email.com"
 }
 
-### Error Handling and Support
+#### Error Handling and Support
 The API has built-in error handling to manage different types of incorrect or unexpected data inputs. If something is added in a way that is not expected, an error message will be returned. However, since the system is constantly evolving, there may be edge cases or new errors that are not yet covered.
 
 If you encounter any errors that are unclear or unexpected, or if you have suggestions on how to improve error handling, please feel free to contact me. I welcome feedback to enhance the robustness and usability of this API.
