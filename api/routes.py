@@ -43,7 +43,7 @@ def search_recipes():
             
             return jsonify({"error": e}), 500
         
-@recipes.route('/id/<int:recipe_id>', methods = ['GET'])
+@recipes.route('/<int:recipe_id>', methods = ['GET'])
 def get_recipe_id(recipe_id):
 
 
