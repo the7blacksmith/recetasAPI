@@ -294,4 +294,71 @@ Below are the filters you can use in your searches using the API
 - Frituras
 - Platos étnicos
 
+## Create a New Recipe
+
+**POST http://localhost:port/recipes/create**
+
+This endpoint allows users to add a new recipe to the database by sending a properly structured JSON object via a POST request. All fields are mandatory, and the request must include all necessary information in the specified format.
+
+To send a POST request with JSON data, you can use a variety of tools, such as **Thunder Client** (VS Code extension), **Postman**, or any other that suits you.
+
+The API uses **Marshmallow** for data validation. If any required field is missing or improperly formatted, the request will fail, and the server will return an error message indicating which field is problematic.
+
+### Field List & Data Types
+
+All of the following fields are required and must be included in your POST request:
+
+- title: string -> The name of the recipe. It must be unique.
+- summary: string -> A short description of the recipe.
+- instructions: string -> Step-by-step instructions for preparing the recipe.
+- difficulty: string -> Difficulty level. Must match an existing entry in the difficulty table (e.g., "Easy").
+- dish_type: string -> Type of dish. Must match an entry in the dish_type table (e.g., "Main Course").
+- diet_type: array of strings -> A list of associated diet types. (e.g., ["Vegetarian"]).
+- food_groups: array of strings -> A list of related food groups. (e.g., ["Meats"]).
+- ingredients: array of objects -> A list of ingredients used in the recipe. Each ingredient object must include the following:
+	1. name: string -> Ingredient name (e.g., "eggs").
+	2. quantity: integer -> Quantity used in the recipe (e.g., 4).
+	3. measure_type: string -> Unit of measurement (e.g., "grams", "teaspoon").
+
+- cooking_time: string -> The time required to cook the recipe in minutes (e.g., "15").
+- approx_price: float -> Approximate cost of the recipe (e.g., 5.0).
+- servings: integer -> Number of servings the recipe makes (e.g., 4).
+- link: string -> A URL link associated with the recipe (e.g., "www.create_recetitas.com").
+- license: string -> License information (e.g., "ChatGPT").
+- image: string -> A URL or path to an image representing the recipe (e.g., "images/pancakes.png").
+- email: string -> Contact email for recipe authorship (e.g., "noemail@email.com").
+
+You can see below an example of a JSON you can use to create a new recipe in the database.
+
+{"title": "Tortitas",
+  "summary": "Deliciosos y esponjosos pancakes, ideales para un desayuno reconfortante. Se sirven con miel, frutas o sirope para un toque extra de sabor.",
+  "cooking_time": "15",
+  "approx_price": 5.0,
+  "servings": 4,
+  "instructions": "'1. En un bol grande, mezclar la harina, el azúcar, el polvo de hornear y la sal.\n' '2. En otro bol, batir el huevo, añadir la leche y la mantequilla derretida.\n' '3. Agregar los ingredientes líquidos a los ingredientes secos y mezclar hasta obtener una masa suave.\n''4. Calentar una sartén antiadherente a fuego medio-alto y engrasarla con un poco de mantequilla.\n''5. Verter 1/4 de taza de la masa en la sartén caliente y cocinar durante 2-3 minutos por cada lado o hasta que estén dorados.\n''6. Servir calientes con tus acompañamientos favoritos como frutas, miel o sirope de arce.'",
+  "difficulty": "Fácil",
+  "dish_type": "Postre",
+  "food_groups": ["Harinas", "Lácteos", "Desayunos"],
+  "ingredients": [
+    [1, "Taza", "Harina de trigo"],
+    [2, "Cucharadas", "Azúcar"],
+    [2, "Cucharaditas", "Polvo de hornear"],
+    [1, "Pizca", "Sal"],
+    [1, "Unidad", "Huevo"],
+    [1, "Taza", "Leche"],
+    [2, "Cucharadas", "Mantequilla derretida"],
+    [1, "Cucharada", "Mantequilla"]
+  ],
+  "diet_type": ["vegetariana"],
+  "link": "www.create_recetitas.com",
+  "license": "ChatGPT",
+  "image": "images/pancakes.png",
+  "email": "xxxx@email.com"
+}
+
+### Error Handling and Support
+The API has built-in error handling to manage different types of incorrect or unexpected data inputs. If something is added in a way that is not expected, an error message will be returned. However, since the system is constantly evolving, there may be edge cases or new errors that are not yet covered.
+
+If you encounter any errors that are unclear or unexpected, or if you have suggestions on how to improve error handling, please feel free to contact me. I welcome feedback to enhance the robustness and usability of this API.
+
 [image-1]:	database/images/Entity-Relationship%20Diagram.png
