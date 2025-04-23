@@ -71,7 +71,7 @@ The API is built with Flask, following best practices for project structure, and
 
 ## How to Use the API
 
-1. Searching for Recipes
+## 1. Searching for Recipes
 
 **GET http://localhost:port/recipes**
 
@@ -130,7 +130,7 @@ This is an example of the JSON response you can get by filtering, as shown above
 ![recipes_search](database/images/recipes_search.png)
 
 
-2. Searching for an accurate recipe:
+## 2. Searching for an accurate recipe:
    
 **GET http://localhost:port/recipes/id/{integer}**
 
@@ -295,7 +295,7 @@ Below are the filters you can use in your searches using the API
 - Frituras
 - Platos étnicos
 
-## Create a New Recipe
+## 3. Create a New Recipe
 
 **POST http://localhost:port/recipes/create**
 
@@ -362,7 +362,7 @@ The API has built-in error handling to manage different types of incorrect or un
 
 If you encounter any errors that are unclear or unexpected, or if you have suggestions on how to improve error handling, please feel free to contact me. I welcome feedback to enhance the robustness and usability of this API.
 
-## Verification
+## 4. Verification
 
 ### Endpoint for verification before recipe modification or deletion.
 
@@ -379,6 +379,8 @@ POST http://localhost:port/recipes/recipes/verification
 You must provide the recipe ID and the email address used when the recipe was created. This data must be sent in JSON format:
 
 {"id": 1, "email": "address@email.com"}
+
+You can check the recipe ID by following the steps in the [Searching for Recipes](#searching-for-recipes) section.
 
 This initiates the process of generating and sending a verification code to the specified email address.
 
