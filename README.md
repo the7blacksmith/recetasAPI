@@ -362,4 +362,50 @@ The API has built-in error handling to manage different types of incorrect or un
 
 If you encounter any errors that are unclear or unexpected, or if you have suggestions on how to improve error handling, please feel free to contact me. I welcome feedback to enhance the robustness and usability of this API.
 
+## Verification
+
+### Endpoint for verification before recipe modification or deletion.
+
+The API includes a lightweight verification system to ensure secure modifications or deletions of recipes. This system sends a temporary code to the email associated with the recipe, which the user must use to proceed with any changes. This adds a layer of security without requiring full user authentication.
+
+### How It Works
+
+- Endpoint
+  
+POST http://localhost:port/recipes/recipes/verification
+
+- Request Body
+
+You must provide the recipe ID and the email address used when the recipe was created. This data must be sent in JSON format:
+
+{"id": 1, "email": "address@email.com"}
+
+This initiates the process of generating and sending a verification code to the specified email address.
+
+- Validation Process
+  
+The system first checks that both the provided id and email match an existing recipe in the database.
+
+- Code Generation
+  
+If the validation is successful, a secure verification code is created using Python’s **secrets** library. This ensures the code is cryptographically secure and random.
+
+- Temporary Storage
+  
+The generated code is stored temporarily using **Redis**, and remains valid for 15 minutes. Redis must be installed and running for this feature to work properly.
+
+- Email Delivery
+  
+The code is sent via email using **Flask-Mail**. This library must also be installed and properly configured. A success response will be returned once the email is sent.
+
+- Error Handling
+  
+To improve usability and adhere to RESTful practices, the system returns descriptive error messages and HTTP status codes for various scenarios such as:
+
+Invalid or unmatched ID/email combination
+
+Server or connection errors (e.g., Redis not available)
+
+These help the user understand what went wrong and how to fix it.
+
 [image-1]:	database/images/Entity-Relationship%20Diagram.png
