@@ -380,7 +380,7 @@ You must provide the recipe ID and the email address used when the recipe was cr
 
 {"id": 1, "email": "address@email.com"}
 
-You can check the recipe ID by following the steps in the [Searching for Recipes](#1.searching-for-recipes) section.
+You can check the recipe ID by following the steps in the 'Searching for Recipes' section.
 
 This initiates the process of generating and sending a verification code to the specified email address.
 
