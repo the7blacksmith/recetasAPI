@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request
-from models import get_recipes, get_id, create_recipe
+from models import get_recipes, get_id, create_recipe, user_verif
 from schemas import recipe_schema
 from marshmallow import ValidationError
+from send_code import s_code
 
 
 
@@ -115,3 +116,32 @@ def new_recipe():
         
         except ValidationError as e:
                 return jsonify({"error": e.messages}), 422
+@recipes.route('/verification', methods = ['POST'])
+def verification():
+        try:
+                data = request.get_json()
+                id = data["id"]
+                email = data["email"]
+                code = user_verif(data)
+                print("CODE ROUTES", code)
+                print(code["status"])
+                print(code["message"])
+
+                if code["status"] == False:
+                        return code["message"]
+        
+
+
+                
+                else:
+                       
+                        response, message = s_code(email, code["message"])
+                        print("ROUTES: CODE;", code, "RESPONSE; MESSAGE;", response, message)
+                        if response == True:
+                                print("HAS BEEN TRUE:")
+                                return jsonify({"success": True, "message": message}), 200
+                        else:
+                                return jsonify({"success": False, "message": message}), 500
+        except Exception as e:
+                return jsonify ({"error": str(e)}), 422
+        

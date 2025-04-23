@@ -1,4 +1,6 @@
 from db import get_connection
+from secrets_code import create_code
+from redis_code import set_code, get_code
 
 def get_recipes(keyword: str, ingredients = None, difficulty = None, dish_type = None, diet_type = None, food_groups = None):
     db = get_connection()
@@ -213,13 +215,37 @@ def create_recipe(create_r):
     db.rollback()
     return {"error": "The recipe has not been created beacuse:"}, e
 
-    
   finally:
     db.close()
 
+def user_verif(user_details: dict):
+    print("MODELS")
+    db = get_connection()
+    cur = db.cursor()
+    try:
+        recipe_id = user_details["id"]
+        user_email = user_details["email"]
 
+        recipe_details = cur.execute("""SELECT id, email FROM recipes WHERE id = ?; """, (recipe_id, ))
+        recipe_details = recipe_details.fetchall()
+        print(recipe_details[0][0])
+        print(recipe_details[0][1])
+        if recipe_id != recipe_details[0][0] or user_email != recipe_details[0][1]:
+            return {"status": False, "message": "The provided user details do not correspond to the recipe information.Verify your information to be identified as a user."} 
+        else:    
+            code = create_code()
+            set_code(recipe_id, code)
+            print("CODE MODELS", code)
+            return {"status": True, "message": code}
     
+    except Exception as e:
+        db.rollback()
+        return {"error": e}
 
+    finally:
+        db.close()
 
-
+if __name__== "__main__":
+    verification = user_verif({'id': 1, 'email': 'noemail@email.com'})
+    print(verification)
 
