@@ -123,25 +123,17 @@ def verification():
                 id = data["id"]
                 email = data["email"]
                 code = user_verif(data)
-                print("CODE ROUTES", code)
-                print(code["status"])
-                print(code["message"])
 
                 if code["status"] == False:
                         return code["message"]
         
-
-
-                
                 else:
-                       
                         response, message = s_code(email, code["message"])
-                        print("ROUTES: CODE;", code, "RESPONSE; MESSAGE;", response, message)
                         if response == True:
-                                print("HAS BEEN TRUE:")
                                 return jsonify({"success": True, "message": message}), 200
                         else:
                                 return jsonify({"success": False, "message": message}), 500
+                        
         except Exception as e:
                 return jsonify ({"error": str(e)}), 422
         

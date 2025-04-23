@@ -15,8 +15,7 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USERNAME'] =  os.getenv("M_USERNAME")
 app.config['MAIL_PASSWORD'] = os.getenv("M_PASSWORD")
 app.config['MAIL_DEFAULT_SENDER'] = os.getenv("M_USERNAME")
-print("USERNAME:", os.getenv("M_USERNAME"))
-print("PASSWORD:", os.getenv("M_PASSWORD"), len(os.getenv("M_PASSWORD")))
+
 
 mail.init_app(app)
 

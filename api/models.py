@@ -219,7 +219,7 @@ def create_recipe(create_r):
     db.close()
 
 def user_verif(user_details: dict):
-    print("MODELS")
+
     db = get_connection()
     cur = db.cursor()
     try:
@@ -228,14 +228,11 @@ def user_verif(user_details: dict):
 
         recipe_details = cur.execute("""SELECT id, email FROM recipes WHERE id = ?; """, (recipe_id, ))
         recipe_details = recipe_details.fetchall()
-        print(recipe_details[0][0])
-        print(recipe_details[0][1])
         if recipe_id != recipe_details[0][0] or user_email != recipe_details[0][1]:
             return {"status": False, "message": "The provided user details do not correspond to the recipe information.Verify your information to be identified as a user."} 
         else:    
             code = create_code()
             set_code(recipe_id, code)
-            print("CODE MODELS", code)
             return {"status": True, "message": code}
     
     except Exception as e:
@@ -245,7 +242,4 @@ def user_verif(user_details: dict):
     finally:
         db.close()
 
-if __name__== "__main__":
-    verification = user_verif({'id': 1, 'email': 'noemail@email.com'})
-    print(verification)
 
