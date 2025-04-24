@@ -137,3 +137,9 @@ def verification():
         except Exception as e:
                 return jsonify ({"error": str(e)}), 422
         
+@recipes.route('/', methods = ['PATCH'])
+def update():
+        recipe_update = request.get_json()
+
+        return recipe_update
+

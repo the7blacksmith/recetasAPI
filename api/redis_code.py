@@ -10,11 +10,14 @@ def set_code(key, code, expiration = 900):#key is always de id of the recipe use
         return False, e
 
 def get_code(key):
-    try: 
+    try:
+        print(key)
         value = r.get(str(key))
+        print(value)
         if value == None:
-            return "Unable to find the code. It may have expired."
-        return True, value
+            return "Invalid or expired code. Please check and try again, or restart the verification process."
+        if key == value:    
+            return True
     except Exception as e:
         return False, e
     

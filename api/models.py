@@ -242,4 +242,41 @@ def user_verif(user_details: dict):
     finally:
         db.close()
 
+def update_recipe(updates:dict):
+    db = get_connection()
+    cur = db.cursor()
 
+    code = updates['code']
+    id = updates['id']
+    title = updates["title"]
+    summary = updates["summary"]
+    cooking_time = updates["cooking_time"]
+    approx_price = updates["approx_price"]
+    servings = updates["servings"]
+    instructions = updates["instructions"]
+    link = updates["link"]
+    license = updates["license"]
+    image = updates["image"]
+    email = updates["email"]
+    difficulty = updates["difficulty"]
+    dish_type = updates["dish_type"]
+    food_groups = updates["food_groups"]
+    ingredients =  updates["ingredients"]
+    diet_type = updates["diet_type"]
+
+    response = get_code(code)
+    recipe_details = cur.execute("""SELECT id, email FROM recipes WHERE id = ?;""", (id, ))
+    recipe_details = recipe_details.fetchall()
+    print(recipe_details[0][0], recipe_details[0][1])
+    if response == True and recipe_details[0][0] == id and recipe_details[0][1] == email:
+        
+    
+    
+    
+    return response
+
+if __name__ == "__main__":
+  u = {"code": "lkdjsfjkadsf", "id": 15, "title": "Tortitas", "summary": "Deliciosos y esponjosos pancakes, ideales para un desayuno reconfortante. Se sirven con miel, frutas o sirope para un toque extra de sabor.", "cooking_time": "15", "approx_price": 5.0, "servings": 4, "instructions": "'1. En un bol grande, mezclar la harina, el azúcar, el polvo de hornear y la sal.\n' '2. En otro bol, batir el huevo, añadir la leche y la mantequilla derretida.\n' '3. Agregar los ingredientes líquidos a los ingredientes secos y mezclar hasta obtener una masa suave.\n''4. Calentar una sartén antiadherente a fuego medio-alto y engrasarla con un poco de mantequilla.\n''5. Verter 1/4 de taza de la masa en la sartén caliente y cocinar durante 2-3 minutos por cada lado o hasta que estén dorados.\n''6. Servir calientes con tus acompañamientos favoritos como frutas, miel o sirope de arce.'", "difficulty": "Fácil", "dish_type": "Postre", "food_groups": ["Harinas", "Lácteos", "Desayunos"], "ingredients": [ [1, "Taza", "Harina de trigo"], [2, "Cucharadas", "Azúcar"], [2, "Cucharaditas", "Polvo de hornear"], [1, "Pizca", "Sal"], [1, "Unidad", "Huevo"], [1, "Taza", "Leche"], [2, "Cucharadas", "Mantequilla derretida"], [1, "Cucharada", "Mantequilla"] ], "diet_type": ["vegetariana"], "link": "www.create_recetitas.com", "license": "ChatGPT", "image": "images/pancakes.png", "email": "xxxx@email.com" }
+  
+updating = update_recipe(u)
+print(updating)
