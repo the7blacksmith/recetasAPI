@@ -245,7 +245,6 @@ def user_verif(user_details: dict):
 def update_recipe(updates:dict):
     db = get_connection()
     cur = db.cursor()
-
     code = updates['code']
     id = updates['id']
     title = updates["title"]
@@ -263,20 +262,61 @@ def update_recipe(updates:dict):
     food_groups = updates["food_groups"]
     ingredients =  updates["ingredients"]
     diet_type = updates["diet_type"]
+    
+   
 
     response = get_code(code)
     recipe_details = cur.execute("""SELECT id, email FROM recipes WHERE id = ?;""", (id, ))
     recipe_details = recipe_details.fetchall()
-    print(recipe_details[0][0], recipe_details[0][1])
-    if response == True and recipe_details[0][0] == id and recipe_details[0][1] == email:
-        
+   
+    if response == code and recipe_details[0][0] == id and recipe_details[0][1] == email:
+        try:
+            
+            cur.execute("""SELECT id FROM difficulty WHERE name = ?;""", (difficulty.capitalize(), ))
+            difficulty_id = cur.fetchone()[0]
+            
+            cur.execute("""SELECT id FROM dish_type WHERE name = ?;""", (dish_type.capitalize(), ))
+            dish_type_id = cur.fetchone()[0]
     
-    
-    
-    return response
+            cur.execute("""UPDATE recipes SET title = ?, summary = ?, cooking_time = ?, approx_price = ?, servings = ?, image = ?, instructions = ?, license = ?, link= ?, difficulty_id = ?, dish_type_id = ? WHERE id = ?;""",(title, summary, cooking_time, approx_price, servings, image, instructions, license, link, difficulty_id, dish_type_id, id))
+           
+            cur.execute("""DELETE FROM recipes_ingredients where recipes_id = ?; """, (id,))
+            cur.execute("""DELETE FROM recipes_diet_type where recipes_id = ?; """, (id,))
+            cur.execute("""DELETE FROM recipes_food_groups where recipes_id = ?; """, (id,))
+            for r in ingredients:
+                cur.execute("""INSERT OR IGNORE INTO measure_type (name) VALUES (?) ON CONFLICT DO NOTHING;""", (r[1].capitalize(), ))
+                cur.execute("SELECT id FROM measure_type where name = (?)", (r[1].capitalize(),))
+                measure_type_id = cur.fetchone()[0]
+                cur.execute("INSERT INTO ingredients (name) VALUES (?) ON CONFLICT(name) DO NOTHING", (r[2].capitalize(),))
+                cur.execute("SELECT id FROM ingredients where name = (?)", (r[2].capitalize(),))
+                ingredients_id = cur.fetchone()[0]
+                #inserting information in the recipes_ingredients table
+                cur.execute("INSERT OR IGNORE INTO recipes_ingredients (recipes_id, ingredients_id, measure_type_id, quantity) VALUES (?, ?, ?, ?)", (id, ingredients_id, measure_type_id, r[0]))
+            
+            for dt in diet_type:
+                cur.execute("INSERT OR IGNORE INTO diet_type (name) VALUES (?) ON CONFLICT(name) DO NOTHING", (dt.capitalize(),))
+                cur.execute("SELECT id FROM diet_type where name = (?)", (dt.capitalize(),))
+                diet_type_id = cur.fetchone()[0]
+                cur.execute("INSERT OR IGNORE INTO recipes_diet_type (recipes_id, diet_type_id) VALUES (?, ?)", (id, diet_type_id))
 
-if __name__ == "__main__":
-  u = {"code": "lkdjsfjkadsf", "id": 15, "title": "Tortitas", "summary": "Deliciosos y esponjosos pancakes, ideales para un desayuno reconfortante. Se sirven con miel, frutas o sirope para un toque extra de sabor.", "cooking_time": "15", "approx_price": 5.0, "servings": 4, "instructions": "'1. En un bol grande, mezclar la harina, el azúcar, el polvo de hornear y la sal.\n' '2. En otro bol, batir el huevo, añadir la leche y la mantequilla derretida.\n' '3. Agregar los ingredientes líquidos a los ingredientes secos y mezclar hasta obtener una masa suave.\n''4. Calentar una sartén antiadherente a fuego medio-alto y engrasarla con un poco de mantequilla.\n''5. Verter 1/4 de taza de la masa en la sartén caliente y cocinar durante 2-3 minutos por cada lado o hasta que estén dorados.\n''6. Servir calientes con tus acompañamientos favoritos como frutas, miel o sirope de arce.'", "difficulty": "Fácil", "dish_type": "Postre", "food_groups": ["Harinas", "Lácteos", "Desayunos"], "ingredients": [ [1, "Taza", "Harina de trigo"], [2, "Cucharadas", "Azúcar"], [2, "Cucharaditas", "Polvo de hornear"], [1, "Pizca", "Sal"], [1, "Unidad", "Huevo"], [1, "Taza", "Leche"], [2, "Cucharadas", "Mantequilla derretida"], [1, "Cucharada", "Mantequilla"] ], "diet_type": ["vegetariana"], "link": "www.create_recetitas.com", "license": "ChatGPT", "image": "images/pancakes.png", "email": "xxxx@email.com" }
-  
-updating = update_recipe(u)
-print(updating)
+            for fg in food_groups:
+                cur.execute("INSERT OR IGNORE INTO food_groups (name) VALUES (?) ON CONFLICT(name) DO NOTHING", (fg.capitalize(),))
+                cur.execute("SELECT id FROM food_groups where name = (?)", (fg.capitalize(),))
+                food_groups_id = cur.fetchone()[0]
+                cur.execute("INSERT OR IGNORE INTO recipes_food_groups (recipes_id, food_groups_id) VALUES (?, ?)", (id, food_groups_id))
+        
+            db.commit()
+            return {"message": "The recipes has been successfully updated"}, 200
+        
+        except Exception as e:
+            db.rollback()
+            return {"error": "There was an error updating the recipe", "details": str(e)}, 500
+
+        finally:
+            db.close()
+
+    else:
+        return{"message":"The details you provided do not match our records. Please double-check and try again"}, 401
+    
+
+

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models import get_recipes, get_id, create_recipe, user_verif
+from models import get_recipes, get_id, create_recipe, user_verif, update_recipe
 from schemas import recipe_schema
 from marshmallow import ValidationError
 from send_code import s_code
@@ -137,9 +137,19 @@ def verification():
         except Exception as e:
                 return jsonify ({"error": str(e)}), 422
         
-@recipes.route('/', methods = ['PATCH'])
+@recipes.route('/', methods = ['PUT'])
 def update():
-        recipe_update = request.get_json()
 
-        return recipe_update
+        recipe_update = request.get_json()
+        
+        response = update_recipe(recipe_update)
+
+        return response
+
+@recipes.route('/<int:recipe_id>', methods=['DELETE'])
+def delete(recipe_id):
+        delete_details = request.get_json()
+        id = recipe_id
+        print(id)
+        return delete_details
 
