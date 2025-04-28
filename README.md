@@ -410,4 +410,47 @@ Server or connection errors (e.g., Redis not available)
 
 These help the user understand what went wrong and how to fix it.
 
+## 5. Updating an Existing Recipe
+
+PUT http://localhost:port/recipes/{id}
+
+This endpoint allows users to update an existing recipe in the database. To ensure security, you must include a verification code (sent previously to your email via the verification process) along with the complete, updated recipe data. The recipe id would not be necessary as it has been included in the URL.
+
+All fields must be included in the request's body, even if you are only updating a few of them. Think of it as overwriting the recipe with a new version.
+
+You can use tools such as Thunder Client, Postman, or any other API client to send the PUT request with a properly structured JSON object.
+
+### Requirements for Update
+
+You must have completed the verification process and received a valid verification code.
+
+- The code must still be active (valid for 15 minutes after generation).
+
+- All fields must be included in the JSON request (even if unchanged).
+
+- The structure must follow the same format as for recipe creation.
+
+### Process Overview
+
+The server verifies that:
+
+The provided code matches the one stored for the associated recipe ID.
+
+The code has not expired.
+
+If verification is successful, the recipe is updated in the database.
+
+A success message is returned confirming the update.
+
+### Error Handling
+
+During the recipe update, the following errors may occur:
+
+- 401 Unauthorized: The provided details (ID, email, or verification code) do not match the recipe.
+Message: "The details you provided do not match our records. Please double-check and try again."
+
+- 500 Internal Server Error: An error occurred while updating the recipe in the database.
+Message: "There was an error updating the recipe."
+In case of a server error, a "details" field is also included with technical information.
+
 [image-1]:	database/images/Entity-Relationship%20Diagram.png
