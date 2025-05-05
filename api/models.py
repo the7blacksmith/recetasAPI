@@ -230,14 +230,17 @@ def user_verif(user_details: dict):
         recipe_details = recipe_details.fetchall()
         if recipe_id != recipe_details[0][0] or user_email != recipe_details[0][1]:
             return {"status": False, "message": "The provided user details do not correspond to the recipe information.Verify your information to be identified as a user."} 
-        else:    
-            code = create_code()
-            set_code(recipe_id, code)
-            return {"status": True, "message": code}
+        else:
+            try:
+                code = create_code()
+                set_code(recipe_id, code)
+                return {"status": True, "message": code}
+            except Exception as e:
+                return {"error": str(e)}
     
     except Exception as e:
         db.rollback()
-        return {"error": e}
+        return {"error": str(e)}
 
     finally:
         db.close()
@@ -265,11 +268,11 @@ def update_recipe(updates:dict):
     
    
 
-    response = get_code(code)
+    response = get_code(id, code)
     recipe_details = cur.execute("""SELECT id, email FROM recipes WHERE id = ?;""", (id, ))
     recipe_details = recipe_details.fetchall()
    
-    if response == code and recipe_details[0][0] == id and recipe_details[0][1] == email:
+    if response == True and recipe_details[0][0] == id and recipe_details[0][1] == email:
         try:
             
             cur.execute("""SELECT id FROM difficulty WHERE name = ?;""", (difficulty.capitalize(), ))
@@ -319,4 +322,31 @@ def update_recipe(updates:dict):
         return{"message":"The details you provided do not match our records. Please double-check and try again"}, 401
     
 
+
+def delete_recipe(data, id):
+    db = get_connection()
+    cur = db.cursor()
+
+    code = data['code']
+    email = data['email']
+    response = get_code(id, code)
+    recipe_details = cur.execute("""SELECT id, email FROM recipes WHERE id = ?;""", (id, ))
+    recipe_details = recipe_details.fetchall()
+
+    if response == True and recipe_details[0][0] == id and recipe_details[0][1] == email:
+
+        try:
+            cur.execute("""DELETE FROM recipes where id = ?;""", (id,))
+            db.commit()
+            return {"message": "The recipes has been successfully deleted"}, 200
+
+        except Exception as e:
+            db.rollback()
+            return {"error": "There was an error deleting the recipe", "details": str(e)}, 500
+
+        finally: 
+            db.close()
+
+    else:
+        return{"message":"The details you provided do not match our records. Please double-check and try again"}, 401
 

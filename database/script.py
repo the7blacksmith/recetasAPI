@@ -30,8 +30,8 @@ cur.executescript('''
         license TEXT,
         image TEXT,
         email TEXT NOT NULL,
-        FOREIGN KEY (difficulty_id) REFERENCES difficulty(id),
-        FOREIGN KEY (dish_type_id) REFERENCES dish_type(id)
+        FOREIGN KEY (difficulty_id) REFERENCES difficulty(id) ON DELETE SET NULL,
+        FOREIGN KEY (dish_type_id) REFERENCES dish_type(id) ON DELETE SET NULL
     );
 
     CREATE TABLE ingredients(
@@ -60,16 +60,16 @@ cur.executescript('''
     measure_type_id INTEGER,
     quantity REAL,
     PRIMARY KEY (recipes_id, ingredients_id, measure_type_id),
-    FOREIGN KEY (recipes_id) REFERENCES recipes(id),
-    FOREIGN KEY (ingredients_id) REFERENCES ingredients(id),
-    FOREIGN KEY (measure_type_id) REFERENCES measure_type(id)
+    FOREIGN KEY (recipes_id) REFERENCES recipes(id) ON DELETE CASCADE,
+    FOREIGN KEY (ingredients_id) REFERENCES ingredients(id) ON DELETE RESTRICT,
+    FOREIGN KEY (measure_type_id) REFERENCES measure_type(id) ON DELETE SET NULL
 );
                   
     CREATE TABLE recipes_diet_type(
         recipes_id INTEGER,
         diet_type_id INTEGER,
-        FOREIGN KEY (recipes_id) REFERENCES recipes(id),
-        FOREIGN KEY (diet_type_id) REFERENCES diet_type(id),
+        FOREIGN KEY (recipes_id) REFERENCES recipes(id) ON DELETE CASCADE,
+        FOREIGN KEY (diet_type_id) REFERENCES diet_type(id) ON DELETE RESTRICT,
         PRIMARY KEY (recipes_id, diet_type_id)
     );
 
@@ -87,8 +87,8 @@ cur.executescript('''
     CREATE TABLE recipes_food_groups(
         recipes_id INTEGER,
         food_groups_id INTEGER,
-        FOREIGN KEY (recipes_id) REFERENCES recipes(id),
-        FOREIGN KEY (food_groups_id) REFERENCES food_groups(id),
+        FOREIGN KEY (recipes_id) REFERENCES recipes(id) ON DELETE CASCADE,
+        FOREIGN KEY (food_groups_id) REFERENCES food_groups(id) ON DELETE RESTRICT,
         PRIMARY KEY (recipes_id, food_groups_id)
     )
 ''')

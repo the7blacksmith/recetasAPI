@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models import get_recipes, get_id, create_recipe, user_verif, update_recipe
+from models import get_recipes, get_id, create_recipe, user_verif, update_recipe, delete_recipe
 from schemas import recipe_schema
 from marshmallow import ValidationError
 from send_code import s_code
@@ -149,7 +149,12 @@ def update():
 @recipes.route('/<int:recipe_id>', methods=['DELETE'])
 def delete(recipe_id):
         delete_details = request.get_json()
+
         id = recipe_id
-        print(id)
-        return delete_details
+
+        response = delete_recipe(delete_details, id)
+
+        return response
+
+
 
