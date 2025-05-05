@@ -132,7 +132,7 @@ This is an example of the JSON response you can get by filtering, as shown above
 
 ## 2. Searching for an accurate recipe:
    
-**GET http://localhost:port/recipes/id/{integer}**
+**GET http://localhost:port/recipes/{id}**
 
 This endpoint returns detailed information about a specific recipe, identified by its ID.
 
@@ -297,7 +297,7 @@ Below are the filters you can use in your searches using the API
 
 ## 3. Create a New Recipe
 
-**POST http://localhost:port/recipes/create**
+**POST http://localhost:port/recipes**
 
 This endpoint allows users to add a new recipe to the database by sending a properly structured JSON object via a POST request. All fields are mandatory, and the request must include all necessary information in the specified format.
 
@@ -357,10 +357,19 @@ You can see below an example of a JSON you can use to create a new recipe in the
   "email": "xxxx@email.com"
 }
 
-#### Error Handling and Support
-The API has built-in error handling to manage different types of incorrect or unexpected data inputs. If something is added in a way that is not expected, an error message will be returned. However, since the system is constantly evolving, there may be edge cases or new errors that are not yet covered.
+### Error Handling
 
-If you encounter any errors that are unclear or unexpected, or if you have suggestions on how to improve error handling, please feel free to contact me. I welcome feedback to enhance the robustness and usability of this API.
+During recipe creation, the following errors may occur:
+
+- 400 Bad Request: No data was provided in the request body.
+
+- 422 Unprocessable Entity: The submitted data did not pass validation (e.g., missing required fields, incorrect data types, or invalid values).
+Message: A detailed error message will be returned indicating which fields are invalid.
+
+- 500 Internal Server Error: An unexpected error occurred while attempting to insert the recipe into the database. If available, a "details" field may also be included with additional technical context.
+
+- 201 Created: The recipe was successfully added to the database.
+
 
 ## 4. Verification
 
@@ -369,10 +378,8 @@ If you encounter any errors that are unclear or unexpected, or if you have sugge
 The API includes a lightweight verification system to ensure secure modifications or deletions of recipes. This system sends a temporary code to the email associated with the recipe, which the user must use to proceed with any changes. This adds a layer of security without requiring full user authentication.
 
 ### How It Works
-
-- Endpoint
   
-POST http://localhost:port/recipes/recipes/verification
+**POST http://localhost:port/recipes/recipes/verification**
 
 - Request Body
 
@@ -400,19 +407,19 @@ The generated code is stored temporarily using **Redis**, and remains valid for 
   
 The code is sent via email using **Flask-Mail**. This library must also be installed and properly configured. A success response will be returned once the email is sent.
 
-- Error Handling
+### Error Handling
   
-To improve usability and adhere to RESTful practices, the system returns descriptive error messages and HTTP status codes for various scenarios such as:
+During the verification process, the following errors may occur:
 
-Invalid or unmatched ID/email combination
+- 500 Internal Server Error: An error occurred while attempting to send the verification code via email.
 
-Server or connection errors (e.g., Redis not available)
+- 422 Unprocessable Entity: An unexpected error occurred while processing the request (e.g., missing fields, mail configuration issues).
 
-These help the user understand what went wrong and how to fix it.
+- 200 OK: The verification code was successfully generated and sent to the provided email address.
 
 ## 5. Updating an Existing Recipe
 
-PUT http://localhost:port/recipes/{id}
+**PUT http://localhost:port/recipes**
 
 This endpoint allows users to update an existing recipe in the database. To ensure security, you must include a verification code (sent previously to your email via the verification process) along with the complete, updated recipe data. The recipe id would not be necessary as it has been included in the URL.
 
@@ -452,5 +459,44 @@ Message: "The details you provided do not match our records. Please double-check
 - 500 Internal Server Error: An error occurred while updating the recipe in the database.
 Message: "There was an error updating the recipe."
 In case of a server error, a "details" field is also included with technical information.
+
+## 6. Deleting a Recipe
+
+**DELETE http://localhost:port/recipes/{id}**
+
+This endpoint allows users to delete an existing recipe from the database. 
+
+### Steps you should follow:
+
+1. You must have requested a verification code using the /recipes/verification endpoint.
+
+2. The verification code must still be valid (it expires 15 minutes after generation).
+
+3. You must send a DELETE request with the id (recipe id) in the URL and a JSON object that includes:
+
+- email: The email address used when the recipe was created.
+
+- code: The verification code received via email.
+
+### Example Request Body
+
+**DELETE http://localhost:port/recipes/34
+{
+  "email": "email@domain.com",
+  "code": "8d2f4a"
+}**
+
+### Error Handling
+
+During the recipe deletion process, the following errors may occur:
+
+- 401 Unauthorized: The provided details (ID, email, or verification code) do not match the recipe.
+Message: "The details you provided do not match our records. Please double-check and try again."
+
+- 500 Internal Server Error: An error occurred while deleting the recipe from the database.
+Message: "There was an error deleting the recipe."
+A "details" field will also be included with technical information for debugging purposes if a server error occurs.
+
+- 200 OK: The recipe has been successfully deleted. However, related details such as ingredients, diet types, or food groups will remain in their respective tables. While all links between the deleted recipe and those items are removed, the items themselves are preserved to enrich the database for future use—for example, if an ingredient like "lemon" was introduced by this recipe, it will still exist in the ingredients table even after the recipe is deleted.
 
 [image-1]:	database/images/Entity-Relationship%20Diagram.png
