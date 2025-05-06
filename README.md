@@ -10,6 +10,9 @@
 - **Git**
 - **Virtualenv**
 - **Marshmallow and flask-marshmallow**
+- **Flask-Mail**
+- **Redis**
+- **dotenv**
 
 ## The database
 The database started with the following relational diagram:
@@ -18,15 +21,17 @@ The database started with the following relational diagram:
 
 Although I plan to make some amendments in the future to address emerging needs, this diagram represents the foundation of my project. The database is organized into multiple tables, with the Recipes table as the main one, containing essential information about each recipe.
 
-In addition to the Recipes table, the database includes the following tables to provide comprehensive and detailed information:
+In addition to the **Recipes table**, the database includes the following tables to provide comprehensive and detailed information:
 
-- Ingredients table: Stores the ingredients used in each recipe.
-- Diet Type table: Specifies dietary categories 
-- Food Group table: Classifies ingredients into nutritional groups.
-- Difficulty table:  The level of complexity required to prepare each recipe.
-- Dish Type table: Based on the type of dish.
+- **Ingredients table**: Stores the ingredients used in each recipe.
+- **Diet Type table**: Specifies dietary categories 
+- **Food Group table**: Classifies ingredients into nutritional groups.
+- **Difficulty table**:  The level of complexity required to prepare each recipe.
+- **Dish Type table**: Based on the type of dish.
 
 These additional tables are related to the Recipes table, allowing for a well-organized and easily expandable structure that enhances the flexibility of the application.
+
+## Database folder
 
 There are also two files in the database folder.
 
@@ -46,28 +51,34 @@ When executed, it will generate the following tables:
 
 2. **seeds.py** -\> this script is used to populate the database with initial data to test and experiment with the API.
 It will add 19 classic Spanish recipes along with their ingredients and complementary information in the related tables.
-This makes it easy to explore and interact with the API without manually adding data.
+This makes exploring and interacting with the API easy without manually adding data.
   
-**Quick Start**
+### Quick Start
 
 To quickly set up the database and load the initial recipes, execute the following commands:
 
 - python3 script.py
 - python3 seeds.py
 
-## The API
+# The API
 
 This API allows you to manage and search for recipes stored in the database, offering flexible filtering options to get precise results based on your criteria. At the moment, it has two main endpoints:
 1.   General recipe search: Retrieves a list of recipes that match the specified filters.
 2.   Recipe details: Shows detailed information about a specific recipe using its ID.
 
-The API is built with Flask, following best practices for project structure, and SQLite3 for data management. It is designed to adhere to RESTful API principles as much as possible, ensuring clear and consistent endpoint naming, proper use of HTTP methods, and stateless interactions. This not only makes the API intuitive and easy to use but also aligns with modern standards for maintainability and scalability.
+The API is built with **Flask**, following best practices for project structure, and **SQLite3** for data management. It is designed to adhere to **RESTful API** principles as much as possible, ensuring clear and consistent endpoint naming, proper use of HTTP methods, and stateless interactions. This not only makes the API intuitive and easy to use but also aligns with modern standards for maintainability and scalability.
 
-**Project Structure**
-- main.py: The entry point that starts and manages the Flask server.
-- db.py: This handles the connection to the SQLite database, and it can be imported in the other .py files.
-- models/: Contains Python functions that interact directly with the database.
-- routes/: Defines the API endpoints and processes incoming requests by interacting with models.py to fetch the needed data.
+## API folder
+
+- main.py: Entry point that starts and manages the Flask server.
+- db.py: Manages the connection to the SQLite database and can be imported by other .py files.
+- models.py: Contains functions that interact directly with the database.
+- routes.py: Defines the API endpoints and handles incoming requests by using models.py to retrieve or update data.
+- schemas.py: This file defines validation schemas using the **Marshmallow** library. It specifies the required fields that users must provide when creating a new recipe. Additionally, it handles and returns helpful information if any validation errors occur.
+- extensions.py: This file was created to prevent unwanted errors when using Flask-Mail, ensuring more stable and predictable email behavior within the application.
+- redis_code.py: This file defines two functions that use **Redis** to store and retrieve passwords when a user attempts to authenticate.
+- secrets_code.py: This file generates a one-time password (OTP) or secret code that is sent to the user's email address for authentication purposes.
+- send_code.py: This file is responsible for sending an email containing the password generated in secrets_code.py to the user’s email address.
 
 ## How to Use the API
 
