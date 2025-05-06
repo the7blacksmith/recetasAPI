@@ -41,8 +41,11 @@ def search_recipes():
                        return jsonify({"error": "No recipes found matching the search criteria"}), 404
                 
         except Exception as e:
-            
-            return jsonify({"error": e}), 500
+            print("Error:", e)
+            return jsonify({"error": {
+        "code": "INTERNAL_SERVER_ERROR",
+        "message": "An unexpected error occurred. Please try again later."
+    }}), 500
         
 @recipes.route('/<int:recipe_id>', methods = ['GET'])
 def get_recipe_id(recipe_id):
@@ -55,7 +58,7 @@ def get_recipe_id(recipe_id):
                
 
                 if len(recipe[0])<1:
-                        return jsonify({"error": "No recipe found with the given ID"}), 404
+                        return {"error": "No recipe found with the given ID"}, 404
                 
                 else:
                         ing_list= []
@@ -99,20 +102,23 @@ def get_recipe_id(recipe_id):
                         return recipe_dict, 200
         
         except Exception as e:
-                
-                return ({"error": e}), 500
+                print("Error:", e)
+                return {"error": {
+        "code": "INTERNAL_SERVER_ERROR",
+        "message": "An unexpected error occurred. Please try again later."
+    }}, 500
 
 @recipes.route('/', methods = ['POST'])
 def new_recipe():
         recipe = request.get_json()
         if not recipe:
-                return jsonify({"error": "No recipe data was provided."}), 400
+                return {"error": "No recipe data was provided."}, 400
         try: 
                 recipe = recipe_schema.load(recipe)
                 new_json_recipe = create_recipe(recipe)
                 if "error" in new_json_recipe:
                         return jsonify(new_json_recipe), 500
-                return jsonify({"message": "The recipe has been successfuly created"}), 201
+                return {"message": "The recipe has been successfuly created"}, 201
         
         except ValidationError as e:
                 return jsonify({"error": e.messages}), 422
@@ -130,12 +136,13 @@ def verification():
                 else:
                         response, message = s_code(email, code["message"])
                         if response == True:
-                                return jsonify({"success": True, "message": message}), 200
+                                return {"success": True, "message": message}, 200
                         else:
-                                return jsonify({"success": False, "message": message}), 500
+                                return {"success": False, "message": message}, 500
                         
         except Exception as e:
-                return jsonify ({"error": str(e)}), 422
+                print("Error:", e)
+                return {"error": "An error occurred during the verification process"}, 422
         
 @recipes.route('/', methods = ['PUT'])
 def update():

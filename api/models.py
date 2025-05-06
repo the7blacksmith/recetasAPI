@@ -88,8 +88,11 @@ def get_recipes(keyword: str, ingredients = None, difficulty = None, dish_type =
         
 
     except Exception as e:
-        
-        return {"error": e}
+        print("Error:", e)
+        return {"error": {
+        "code": "INTERNAL_SERVER_ERROR",
+        "message": "An unexpected error occurred. Please try again later."
+    }}, 500
     
     finally:
         db.close()
@@ -213,7 +216,8 @@ def create_recipe(create_r):
 
   except Exception as e:
     db.rollback()
-    return {"error": "The recipe has not been created beacuse:"}, e
+    print("Error:", e)
+    return {"error": "The recipe has not been created"}
 
   finally:
     db.close()
@@ -312,8 +316,9 @@ def update_recipe(updates:dict):
             return {"message": "The recipes has been successfully updated"}, 200
         
         except Exception as e:
+            print("Error:", e)
             db.rollback()
-            return {"error": "There was an error updating the recipe", "details": str(e)}, 500
+            return {"error": "There was an error updating the recipe"}, 500
 
         finally:
             db.close()
@@ -341,8 +346,9 @@ def delete_recipe(data, id):
             return {"message": "The recipes has been successfully deleted"}, 200
 
         except Exception as e:
+            print("Error:", e)
             db.rollback()
-            return {"error": "There was an error deleting the recipe", "details": str(e)}, 500
+            return {"error": "There was an error deleting the recipe"}, 500
 
         finally: 
             db.close()
