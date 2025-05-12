@@ -148,7 +148,12 @@ def verification():
 def update():
 
         recipe_update = request.get_json()
+        try: 
+                recipe_update = recipe_schema.load(recipe_update)
         
+        except ValidationError as e:
+                return {"error": e.messages}, 422
+
         response = update_recipe(recipe_update)
 
         return response

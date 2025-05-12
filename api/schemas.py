@@ -16,5 +16,7 @@ class RecipeSchema(Schema):
     food_groups = fields.List(fields.Str(), required=True)
     ingredients = fields.List(fields.List(fields.Raw()), required=True)
     diet_type = fields.List(fields.Str(required=True))
+    id = fields.Int(required=False)
+    code = fields.Str(required=False)
 
 recipe_schema = RecipeSchema()
